@@ -1,6 +1,6 @@
 
 using UnityEngine;
-
+using Horror.Utilities;
 
 namespace Horror.Physics
 {
@@ -15,17 +15,19 @@ namespace Horror.Physics
         [SerializeField] private float drag = 0.1f;
         private Vector3 Velocity;
         [SerializeField] private CharacterController controller;
+        private Vector3 moveBuffer;
         private Vector3 externalForces;
         public bool isGrounded => controller.isGrounded;
         void FixedUpdate()
         {
-            Vector3 moveStep = Vector3.zero;
+
             Velocity = ApplyGravity(Velocity);
             Velocity = ApplyForce(Velocity);
-            Velocity  = ApplyCollision(Velocity);
-            moveStep = SetSpeed(moveStep);
+            Velocity = ApplyCollision(Velocity);
+            moveBuffer = SetSpeed(moveBuffer);
 
-            controller.Move(moveStep);
+            controller.Move(moveBuffer);
+            moveBuffer = Vector3.zero;
         }
         Vector3 ApplyGravity(Vector3 velocity)
         {
@@ -42,7 +44,7 @@ namespace Horror.Physics
         {
             if (controller.isGrounded)
             {
-                velocity.y = 0;
+                velocity.y = Mathf.Max(-controller.skinWidth,velocity.y);
 
             }
             return velocity;
@@ -53,18 +55,24 @@ namespace Horror.Physics
             {
                 force *= Time.fixedDeltaTime;
             }
-            else
-            {
-                force /= Time.fixedDeltaTime;
-            }
+
             externalForces += force;
-            
+
         }
-        private Vector3 ApplyForce(Vector3 velocity){
-            velocity +=externalForces;
+        private Vector3 ApplyForce(Vector3 velocity)
+        {
+            velocity += externalForces;
             externalForces = Vector3.zero;
             return velocity;
         }
-    
+        public void Move(Vector3 moveStep)
+        {
+            moveBuffer += moveStep;
+            
+        }
+        void OnDrawGizmosSelected()
+        {
+            controller.DrawGroundContactGizmos();
+        }
     }
 }
