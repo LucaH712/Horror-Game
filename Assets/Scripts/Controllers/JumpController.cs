@@ -12,7 +12,7 @@ namespace Horror.Controllers
         // Update is called once per frame
         void FixedUpdate()
         {
-            if (inputBrain.JumpHeld)
+            if (inputBrain.Input.JumpHeld)
             {
                 AttemptJump();
                 

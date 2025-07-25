@@ -13,9 +13,9 @@ namespace Horror.Controllers
         // Update is called once per frame
         void FixedUpdate()
         {
-            Vector3 right = transform.right * inputBrain.Movement.x;
-            Vector3 forward = transform.forward * inputBrain.Movement.z;
-            Vector3 up = transform.up * inputBrain.Movement.y;
+            Vector3 right = transform.right * inputBrain.Input.Movement.x;
+            Vector3 forward = transform.forward * inputBrain.Input.Movement.z;
+            Vector3 up = transform.up * inputBrain.Input.Movement.y;
             Vector3 movement = right + up + forward;
             physics.Move(movement * Time.fixedDeltaTime * speed);
         }
