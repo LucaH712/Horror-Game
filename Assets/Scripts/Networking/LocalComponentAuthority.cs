@@ -16,7 +16,7 @@ namespace Horror
         }
         void Start()
         {
-            bool enabled = IsSpawned && IsOwner;
+            bool enabled = IsSpawned && HasAuthority;
             foreach (MonoBehaviour component in components)
             {
                 component.enabled = enabled;

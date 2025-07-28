@@ -6,7 +6,7 @@ namespace Horror.Inputs
     public abstract class InputBrain : NetworkBehaviour
     {
         public bool AllowInput = true;
-        public bool InputAllowed => AllowInput && IsOwner && IsSpawned;
+        public bool InputAllowed => AllowInput && HasAuthority && IsSpawned;
         protected abstract InputValues InternalInput { get; }
         public InputValues Input => InputAllowed ? InternalInput : InputValues.Empty;
         

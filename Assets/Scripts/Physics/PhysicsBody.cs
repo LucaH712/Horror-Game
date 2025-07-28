@@ -1,6 +1,7 @@
 
 using UnityEngine;
 using Horror.Utilities;
+using NUnit.Framework;
 
 namespace Horror.Physics
 {
@@ -20,12 +21,11 @@ namespace Horror.Physics
         public bool isGrounded => controller.isGrounded;
         void FixedUpdate()
         {
-
+            if (!IsSpawned || !HasAuthority) return;
             Velocity = ApplyGravity(Velocity);
             Velocity = ApplyForce(Velocity);
             Velocity = ApplyCollision(Velocity);
             moveBuffer = SetSpeed(moveBuffer);
-
             controller.Move(moveBuffer);
             moveBuffer = Vector3.zero;
         }
