@@ -3,10 +3,10 @@ using Horror.Inputs;
 namespace Horror.Controllers
 {
   
-    public class LookController : MonoBehaviour
+    public class LookController : InputControllerBase
     {
         [SerializeField] private float maxVerticalAngle = 85;
-        [SerializeField] private InputBrain inputBrain;
+       
         [SerializeField] private Transform head;
         private float headRotation;
    

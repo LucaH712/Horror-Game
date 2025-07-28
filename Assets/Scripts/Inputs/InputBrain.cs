@@ -13,7 +13,7 @@ namespace Horror.Inputs
             
         
     }
-    public struct InputValues
+   [System.Serializable] public struct InputValues
     {
         public Vector3 Movement;
         public bool JumpHeld;
