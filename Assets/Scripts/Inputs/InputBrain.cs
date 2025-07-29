@@ -1,4 +1,4 @@
-using PlasticGui.WorkspaceWindow;
+using Horror.Utilities;
 using UnityEngine;
 using Unity.Netcode;
 namespace Horror.Inputs
@@ -6,7 +6,7 @@ namespace Horror.Inputs
     public abstract class InputBrain : NetworkBehaviour
     {
         public bool AllowInput = true;
-        public bool InputAllowed => AllowInput && HasAuthority && IsSpawned;
+        public bool InputAllowed => AllowInput && this.CanControl();
         protected abstract InputValues InternalInput { get; }
         public InputValues Input => InputAllowed ? InternalInput : InputValues.Empty;
         

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Unity.Netcode;
 namespace Horror.Utilities
 {
     public static class Extensions
@@ -11,6 +11,10 @@ namespace Horror.Utilities
             Vector3 position = controller.transform.position + Vector3.down * (controller.height * .5f - controller.radius + controller.skinWidth * 2f);
             Gizmos.color = controller.isGrounded ? Color.red : Color.green;
             Gizmos.DrawWireSphere(position, radius);
+        }
+        public static bool CanControl(this NetworkBehaviour networkBehaviour)
+        {
+            return networkBehaviour.gameObject.activeInHierarchy && networkBehaviour.IsSpawned && networkBehaviour.IsOwner;
         }
     }
 }

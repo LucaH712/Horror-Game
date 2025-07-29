@@ -21,7 +21,7 @@ namespace Horror.Physics
         public bool isGrounded => controller.isGrounded;
         void FixedUpdate()
         {
-            if (!IsSpawned || !HasAuthority) return;
+            if (!this.CanControl()) return;
             Velocity = ApplyGravity(Velocity);
             Velocity = ApplyForce(Velocity);
             Velocity = ApplyCollision(Velocity);
@@ -51,6 +51,7 @@ namespace Horror.Physics
         }
         public void AddForce(Vector3 force, ForceMode forceMode)
         {
+            if (!this.CanControl()) return;
             if (forceMode == ForceMode.Force || forceMode == ForceMode.Acceleration)
             {
                 force *= Time.fixedDeltaTime;
@@ -67,6 +68,7 @@ namespace Horror.Physics
         }
         public void Move(Vector3 moveStep)
         {
+            if (!this.CanControl()) return;
             moveBuffer += moveStep;
             
         }

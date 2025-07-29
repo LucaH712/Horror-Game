@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4296513366976712165}
   - component: {fileID: 4962615379320364725}
   - component: {fileID: 4656520604792653634}
-  - component: {fileID: 3807474528821818586}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -93,19 +92,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1246590021209158264}
   m_Enabled: 1
---- !u!114 &3807474528821818586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1246590021209158264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9735cb5815d5a6544a778b668d2848e0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1 &4179190169398712091
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +145,7 @@ GameObject:
   - component: {fileID: 5572674753657810667}
   - component: {fileID: -8248970089075558559}
   - component: {fileID: 4963798887225263764}
+  - component: {fileID: 322999534629125834}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -295,9 +282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de73a96ab999bca42886769a3a1b2557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputBrain: {fileID: 3074538969244986883}
   speed: 5
   physics: {fileID: 2406495201538456567}
-  inputBrain: {fileID: 3074538969244986883}
 --- !u!114 &8814181843077755153
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,9 +338,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4c95a39324c1de499ec68d652577a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inputBrain: {fileID: 3074538969244986883}
   physicsBody: {fileID: 2406495201538456567}
   jumpForce: 5
-  inputBrain: {fileID: 3074538969244986883}
 --- !u!114 &3074538969244986883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,8 +368,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e94fa22390e0c8249b9bdc1ac953909a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxVerticalAngle: 85
   inputBrain: {fileID: 3074538969244986883}
+  maxVerticalAngle: 85
   head: {fileID: 7641030351100012482}
 --- !u!114 &-8248970089075558559
 MonoBehaviour:
@@ -443,3 +430,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+--- !u!114 &322999534629125834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6913676101430124889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9735cb5815d5a6544a778b668d2848e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
+  targets:
+  - {fileID: 1246590021209158264}
