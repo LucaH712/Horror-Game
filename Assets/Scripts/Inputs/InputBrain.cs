@@ -8,17 +8,18 @@ namespace Horror.Inputs
         public bool AllowInput = true;
         public bool InputAllowed => AllowInput && this.CanControl();
         protected abstract InputValues InternalInput { get; }
-        public InputValues Input => InputAllowed ? InternalInput : InputValues.Empty;
+        public InputValues Input => InputAllowed && InternalInput!=null ? InternalInput : InputValues.Empty;
+        
         
             
         
     }
-   [System.Serializable] public struct InputValues
+   [System.Serializable] public class InputValues
     {
         public Vector3 Movement;
         public bool JumpHeld;
         public Vector2 Look;
-        public static readonly InputValues Empty = default(InputValues);
+        public static readonly InputValues Empty = new InputValues();
     }
     
      

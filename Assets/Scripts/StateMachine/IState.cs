@@ -1,19 +1,15 @@
 using UnityEngine;
 
-namespace Horror
+namespace Horror.StateMachine
 {
-    public class IState : MonoBehaviour
+    public interface IState<T>
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
-        {
+        void EnterState(T payload);
+        void ExitState(T payload);
+        IState<T> Update(T payload);
         
-        }
+            
+     }
+       
+ }
 
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-    }
-}

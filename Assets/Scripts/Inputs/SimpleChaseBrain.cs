@@ -1,18 +1,23 @@
 
 using UnityEngine;
-
+using UnityEngine.AI;
 namespace Horror.Inputs
 {
     public class SimpleChaseBrain : InputBrain
     {
-        private InputValues input;
+        private InputValues input=new InputValues();
+        [SerializeField]private NavMeshAgent agent;
         protected override InputValues InternalInput => input;
         [SerializeField] private Vector3 movementMultipliers = new Vector3(1.0f, 0.0f, 1.0f);
         [SerializeField] private Vector3 lookMultipliers = new Vector3(1.0f, 0.50f, 1.0f);
         [SerializeField]private float lookMaxSpeed = 100.0f;
         [SerializeField] private bool canJump = true;
         [SerializeField] private float jumpHeightThreshold = 0.6f;
-
+        void OnValidate()
+        {
+            if (agent != null) return;
+            agent = this.GetComponent<NavMeshAgent>();
+        }
         // Update is called once per frame
         void Update()
         {
@@ -21,6 +26,7 @@ namespace Horror.Inputs
                 if not, provide no input */
             Transform target = FindTarget();
             if (!target) { input = InputValues.Empty; return; }
+            agent.destination = target.position;
             MoveTowards(target);
             AttemptJump(target);      
               }
@@ -44,7 +50,7 @@ namespace Horror.Inputs
         void MoveTowards(Transform target)
         {
             //!-----------------------------------------------------------------
-            Vector3 dir = target.position - transform.position;
+            Vector3 dir = agent.desiredVelocity;//target.position - transform.position;
             Vector3 localDir = transform.InverseTransformDirection(dir);
             Vector3 moveDir = localDir;
             moveDir = Vector3.Scale(moveDir, movementMultipliers);
