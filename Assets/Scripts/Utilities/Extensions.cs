@@ -16,5 +16,22 @@ namespace Horror.Utilities
         {
             return networkBehaviour.gameObject.activeInHierarchy && networkBehaviour.IsSpawned && networkBehaviour.IsOwner;
         }
+        public static Transform FindTarget(this Transform transform)
+        {
+            GameObject[] players;
+            players = GameObject.FindGameObjectsWithTag("Player"); 
+            float closestPlayerDistance = Mathf.Infinity;
+            Transform closestPlayer = null;
+            foreach (GameObject player in players)
+            {
+                float distance = Vector3.Distance(transform.position, player.transform.position);
+                if (distance < closestPlayerDistance)
+                {
+                    closestPlayerDistance = distance;
+                    closestPlayer = player.transform;
+                }
+            }
+            return closestPlayer;
+        }
     }
 }
