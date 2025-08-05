@@ -1,5 +1,7 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.AI;
+
 namespace Horror.Utilities
 {
     public static class Extensions
@@ -19,7 +21,7 @@ namespace Horror.Utilities
         public static Transform FindTarget(this Transform transform)
         {
             GameObject[] players;
-            players = GameObject.FindGameObjectsWithTag("Player"); 
+            players = GameObject.FindGameObjectsWithTag("Player");
             float closestPlayerDistance = Mathf.Infinity;
             Transform closestPlayer = null;
             foreach (GameObject player in players)
@@ -32,6 +34,14 @@ namespace Horror.Utilities
                 }
             }
             return closestPlayer;
+        }
+        public static float CalculateDistance(this NavMeshPath navMeshPath)
+        {
+            float dist = 0;
+            for (int i = 0; i < navMeshPath.corners.Length-1; i++) {
+                dist += Vector3.Distance(navMeshPath.corners[i], navMeshPath.corners[i + 1]);
+            }
+            return dist;
         }
     }
 }
