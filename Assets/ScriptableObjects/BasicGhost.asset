@@ -13,5 +13,17 @@ MonoBehaviour:
   m_Name: BasicGhost
   m_EditorClassIdentifier: 
   settings:
+    PlayerValidationCheckInterval: 1
+    Searcher:
+      sightLineMaxRadius: 5
+      sightLineMinRadius: 0.1
+      rayCastLength: 10
+      startPoint: {x: 0, y: 0, z: 0}
+      pointsPerRadial: 20
+      sightline_rays: 0
+      sightline_radials: 0
+      maxDist: 20
+      searchType: 2
+    PlayerSearchInterval: 3
     AggroRadius: 5
     PatrolStopBuffer: 2
