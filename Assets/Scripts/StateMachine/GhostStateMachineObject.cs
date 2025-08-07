@@ -17,6 +17,7 @@ namespace Horror.StateMachine
             public float PlayerSearchInterval = 3.0f;
             public float AggroRadius = 5f;
             public float PatrolStopBuffer = 0.15f;
+            public bool UseNavMesh = true;
         }
 
 
@@ -40,7 +41,7 @@ namespace Horror.StateMachine
                     if (!settings.Searcher.IsTargetValid(payload.Agent,payload.Target)) return new PatrolState(settings);
                 }
                 timeSinceLastValidCheck += Time.deltaTime;
-                payload.Brain.MoveTowards(payload.Target.position);
+                payload.Brain.MoveTowards(payload.Target.position,settings.UseNavMesh);
                 return this;
             }
             public override void EnterState(GhostPayload payload)
@@ -75,9 +76,10 @@ namespace Horror.StateMachine
                 Vector3[] patrolPoints = PatrolPointManager.Instance.Points;
                 float stopBuffer = settings.PatrolStopBuffer;
                 int index = payload.PatrolDestinationIndex;
-                payload.Brain.MoveTowards(patrolPoints[index]);
-                if (payload.Agent.remainingDistance <= stopBuffer) payload.PatrolDestinationIndex = (index + 1) % patrolPoints.Length;
-                timeSinceLastSearch += Time.deltaTime;
+                payload.Brain.MoveTowards(patrolPoints[index],settings.UseNavMesh);
+                float dist = settings.UseNavMesh ? payload.Agent.remainingDistance : Vector3.Distance(payload.Transform.position, patrolPoints[index]);
+                if (dist <= stopBuffer) payload.PatrolDestinationIndex = (index + 1) % patrolPoints.Length;
+                    timeSinceLastSearch += Time.deltaTime;
                 if (timeSinceLastSearch >= settings.PlayerSearchInterval)
                 {
                     timeSinceLastSearch = 0.0f;

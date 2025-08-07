@@ -10,7 +10,7 @@ namespace Horror
         public List<GameObject> Players { get; private set; } = new List<GameObject>();
         [SerializeField] private float checkTimer = 5.0f;
         private float currentCheckTimer = 0.0f;
-       
+
         // Update is called once per frame
         void Update()
         {
@@ -52,12 +52,12 @@ namespace Horror
             }
             return closestPlayer;
         }
-        public GameObject SightLineSearch()
+        public GameObject SightLineSearch(float Radius, Transform head, RaycastHit[] raycasts, float pointsPerRadial, float minRadius, float maxRadius, float maxDistance, Vector3 startPoint)
         {
             return null;
-           // SpawnRaycasts(sightLineMaxRadius);           
+            // SpawnRaycasts(sightLineMaxRadius);           
         }
-         public GameObject SightlineRaycasts(Transform head, RaycastHit[] raycasts, float radials, float minRadius, float maxRadius, float maxDistance)
+        public GameObject SightlineRaycasts(Transform head, RaycastHit[] raycasts, float radials, float minRadius, float maxRadius, float maxDistance)
         {
             //* Goal: Find a player in one of these rays we shoot out
             //* Parameters:
@@ -100,39 +100,19 @@ namespace Horror
 
             return player;
         }
-        /*void SpawnRaycasts(float Radius) {
-            float AngleIncrement = 360 / pointsPerRadial;
-            float angle = 0;
-            for (int i = 0; i < pointsPerRadial; i++)
+    public GameObject SpawnRaycasts(float startRadius, float Decrement,float minRadius,float castDistance,int pointsPerRadial, Transform head)
+        {
+            GameObject player = null;
+            for (float i = startRadius; i > minRadius; i -= Decrement)
             {
-                
-                Vector3 endPoint= Vector3.zero;
-                float CenterToPointAngleY;
-                float CenterToPointAngleX = 0.0f;
-                float xLength = Mathf.Cos(angle) * Radius;
-                CenterToPointAngleX = Mathf.Atan2(xLength, rayCastLength);
-                float yLength=Mathf.Sin(angle)*Radius;
-                CenterToPointAngleY = Mathf.Atan2(yLength, rayCastLength);
-                Vector2 StartToEndAngle = new Vector3(CenterToPointAngleX, CenterToPointAngleY);
-                float xMag = rayCastLength/Mathf.Cos(CenterToPointAngleX);
-                float mag = xMag/Mathf.Cos(CenterToPointAngleY);
-
-                
-                //Calculate End Point;
-                //? endPoint = new Vector3(IdkTheX, IdkTheY, rayCastLength);
-                //Gets the directionVector;
-                Vector3 DirectionVector = endPoint - startPoint;
-                if (angle == 360)
+                player = DrawCircleInRays(i, castDistance, pointsPerRadial, head);
+                if (player != null)
                 {
-                    SpawnRaycasts(Radius - 0.1f);
+                    return player;
                 }
-                //Spawn the actual raycast, then increase the angle, keep going until angle is 360
-                //When angle is 360, we run the function again with a smaller radius
-
-                //Raycasts are done, increase angle and do again;
-                angle += AngleIncrement;
             }
-        }*/
+            return player;
+        }
         public GameObject[] SortClosestPlayers(NavMeshAgent agent)
         {
             NavMeshPath workingPath = new NavMeshPath();
@@ -147,6 +127,32 @@ namespace Horror
                 return workingPath.CalculateDistance();
             }).ToArray();
         }
-       
+
+    
+    GameObject DrawCircleInRays(float radius, float castDistance, int pointsPerRadial, Transform head) {
+            float AngleIncrement = 360 / pointsPerRadial;
+            GameObject player = null;
+            for (float i = 0; i < 360; i += AngleIncrement)
+            {
+                float angle = i;
+                float xLength = Mathf.Cos(angle * Mathf.Deg2Rad) * radius;
+                float yLength = Mathf.Sin(angle * Mathf.Deg2Rad) * radius;
+                Vector3 circle = new Vector3(xLength, yLength, castDistance);
+                Vector3 direction = head.TransformDirection(circle);
+                bool hit = UnityEngine.Physics.Raycast(head.position, direction, out RaycastHit raycast, castDistance);
+                if (hit && raycast.collider.tag == "Player")
+                {
+                    //* Player found! get the gameobject
+
+                    player = raycast.collider.gameObject;
+                    //? This could be optimized by just returning the player the first time it's found, but that would halt the DrawRays portion
+                    // return player;
+
+                }
+                Debug.DrawRay(head.position, direction * castDistance, Color.red, .5f);
+                
+            }
+            return player;
+        }
     }
 }

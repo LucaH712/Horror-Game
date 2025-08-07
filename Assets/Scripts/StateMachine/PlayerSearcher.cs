@@ -13,6 +13,9 @@ namespace Horror.StateMachine
         [SerializeField] int pointsPerRadial = 20;
         [SerializeField] int sightline_rays;
         [SerializeField] float sightline_radials;
+        [SerializeField] float viewRadius = 15;
+        [SerializeField] float Decrement = 1.0f;
+        
         NavMeshPath _workingPath;
         NavMeshPath workingPath
         {
@@ -77,18 +80,31 @@ namespace Horror.StateMachine
         }
         bool SightLineSearch(GhostPayload payload, out GameObject player)
         {
-            player = PlayerManager.Instance.SightlineRaycasts(payload.Transform, raycastHits, sightline_radials, sightLineMinRadius, sightLineMaxRadius, maxDist);
-            return player!= null;
+            player = PlayerManager.Instance.SpawnRaycasts(viewRadius, Decrement, sightLineMinRadius,maxDist,pointsPerRadial,payload.Transform);
+            //
+            return player != null;
         }
         public bool IsTargetValid(NavMeshAgent agent, Transform target)
         {
-            if (searchType == SearchTypes.SightLine) return true;
-            bool pathFound = agent.CalculatePath(target.position, workingPath);
-            if (!pathFound || workingPath.status != NavMeshPathStatus.PathComplete)
+            if (searchType == SearchTypes.SightLine)
             {
-                return false;
+
+                if (UnityEngine.Physics.Linecast(agent.transform.position, target.transform.position, out RaycastHit hit))
+                    return hit.distance < maxDist && hit.collider.transform == target;
+                return true;
             }
-            float dist = workingPath.CalculateDistance();
+            float dist;
+            if (agent.enabled)
+            {
+                bool pathFound = agent.CalculatePath(target.position, workingPath);
+                if (!pathFound || workingPath.status != NavMeshPathStatus.PathComplete)
+                {
+                    return false;
+                }
+
+                dist = workingPath.CalculateDistance();
+            }
+            else dist = Vector3.Distance(agent.transform.position,target.position);
             if (dist > maxDist)
                 return false;
             return true;

@@ -57,10 +57,10 @@ namespace Horror.Inputs
             if (InputAllowed && stateMachine != null)
                 stateMachine.Update(payload);
         }
-        public void MoveTowardsAgentDestination()
+        public void MoveTowardsDirection(Vector3 direction)
         {
             //!-----------------------------------------------------------------
-            Vector3 dir = agent.desiredVelocity;//target.position - transform.position;
+            Vector3 dir = direction;//agent.desiredVelocity;//target.position - transform.position;
             Vector3 localDir = transform.InverseTransformDirection(dir);
             Vector3 moveDir = localDir;
             moveDir = Vector3.Scale(moveDir, movementMultipliers);
@@ -75,10 +75,13 @@ namespace Horror.Inputs
             //!-----------------------------------------------------------------
 
         }
-        public void MoveTowards(Vector3 pos)
+        public void MoveTowards(Vector3 pos,bool useNavMesh=true)
         {
+            if(agent.enabled)
             agent.destination = pos;
-            MoveTowardsAgentDestination();
+            MoveTowardsDirection(
+                useNavMesh ? agent.desiredVelocity : pos-transform.position
+            );
         }
     }
 }
